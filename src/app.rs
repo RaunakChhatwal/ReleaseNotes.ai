@@ -13,10 +13,10 @@ pub fn App() -> impl IntoView {
 
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/getinsured.css"/>
+        <Stylesheet id="leptos" href="/pkg/getinsured.css" />
 
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text="Welcome to Leptos" />
 
         // content for this welcome page
         <Router fallback=|| {
@@ -29,7 +29,7 @@ pub fn App() -> impl IntoView {
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage/>
+                    <Route path="" view=HomePage />
                 </Routes>
             </main>
         </Router>
