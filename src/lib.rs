@@ -1,3 +1,4 @@
+pub mod form;
 pub mod app;
 pub mod error_template;
 #[cfg(feature = "ssr")]

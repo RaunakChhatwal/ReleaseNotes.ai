@@ -1,4 +1,6 @@
 use crate::error_template::{AppError, ErrorTemplate};
+use crate::form::Form;
+
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -9,14 +11,12 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-
-
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/getinsured.css" />
 
         // sets the document title
-        <Title text="Welcome to Leptos" />
+        <Title text="ReleaseNotes.ai" />
 
         // content for this welcome page
         <Router fallback=|| {
@@ -27,7 +27,7 @@ pub fn App() -> impl IntoView {
             }
             .into_view()
         }>
-            <main>
+            <main class="h-[100vh] p-[2vw] text-[1.1em] bg-gray-300">
                 <Routes>
                     <Route path="" view=HomePage />
                 </Routes>
@@ -39,12 +39,8 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let (count, set_count) = create_signal(0);
-    let on_click = move |_| set_count.update(|count| *count += 1);
-
     view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <h1 class="mb-[7vh] text-[1.5em]">"ReleaseNotes.ai"</h1>
+        <Form />
     }
 }
