@@ -11,6 +11,8 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
+        <Body class="bg-gray-300" />
+
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/getinsured.css" />
@@ -27,7 +29,7 @@ pub fn App() -> impl IntoView {
             }
             .into_view()
         }>
-            <main class="h-[100vh] p-[2vw] text-[1.1em] bg-gray-300">
+            <main class="p-[2vw] text-[1.1em]">
                 <Routes>
                     <Route path="" view=HomePage />
                 </Routes>
