@@ -9,6 +9,7 @@ pub mod fetch_tokens;
 #[cfg(feature = "ssr")]
 pub mod submit;
 
+pub mod ticket_form;
 pub mod form;
 pub mod app;
 #[cfg(feature = "ssr")]
