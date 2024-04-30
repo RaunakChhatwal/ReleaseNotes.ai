@@ -1,12 +1,11 @@
 #[cfg(feature = "ssr")]
-use axum::Router;
-
-#[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
+    use axum::{Router, routing};
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use getinsured::app::*;
+    use getinsured::submit::submit;
     use getinsured::fileserv::file_and_error_handler;
 
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
@@ -17,11 +16,12 @@ async fn main() {
     let conf = get_configuration(None).await.unwrap();
     let leptos_options = conf.leptos_options;
     let addr = leptos_options.site_addr;
-    let routes = generate_route_list(App);
+    let routes = generate_route_list(RootApp);
 
     // build our application with a route
     let app = Router::new()
-        .leptos_routes(&leptos_options, routes, App)
+        .route("/submit", routing::get(submit))
+        .leptos_routes(&leptos_options, routes, RootApp)
         .fallback(file_and_error_handler)
         .with_state(leptos_options);
 

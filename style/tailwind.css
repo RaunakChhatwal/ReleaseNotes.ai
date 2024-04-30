@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-*:focus {
+input:focus {
     outline: none;
+}
+
+p {
+    white-space: pre-wrap;
 }

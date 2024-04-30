@@ -1,0 +1,18 @@
+{
+  "repo_link": "https://github.com/leptos-rs/leptos.git",
+  "product_name": "Leptos",
+  "release_tag": "v0.6.9",
+  "prev_release_tag": "v0.6.8",
+  "release_date": "1970-01-01",
+  "target_audience": "Technical",
+  "tickets": [
+    {
+      "summary": "Remove panic for axum ResponseOptions",
+      "description": "It's not clear what's causing ResponseOptions to get removed from context but it causes occasional panics. This removes the panics and starts providing some debug info to track the issue down further."
+    },
+    {
+      "summary": "register server_fn first to allow for wildcard Route path",
+      "description": "It's quite common to have a NotFound page with a wildcard path like this\n```\n<Routes>\n\t...\n\t<Route path=\"*any\" view=NotFound>\n</Routes>\n```\nIn ssr mode, most servers do a first match win approach, so we should register server functions before view routes, or else a wildcard route would block all api requests.\n\nFix: https://discord.com/channels/1031524867910148188/1218508054442545185"
+    }
+  ]
+}

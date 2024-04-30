@@ -1,6 +1,16 @@
+pub mod util;
+
+#[cfg(feature = "ssr")]
+pub mod git;
+
+#[cfg(feature = "ssr")]
+pub mod fetch_tokens;
+
+#[cfg(feature = "ssr")]
+pub mod submit;
+
 pub mod form;
 pub mod app;
-pub mod error_template;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
 
@@ -9,5 +19,5 @@ pub mod fileserv;
 pub fn hydrate() {
     use crate::app::*;
     console_error_panic_hook::set_once();
-    leptos::mount_to_body(App);
+    leptos::mount_to_body(RootApp);
 }
