@@ -2,6 +2,8 @@
 
 Generates release notes for a product from git commit log and associated artifacts. Release notes can be prepared with 3 types of users: non-technical customers, project managers, technical teams.
 
+![Showcase screenshot](./showcase.png)
+
 ## Setup
 Run:
 - `cargo install cargo-leptos`
