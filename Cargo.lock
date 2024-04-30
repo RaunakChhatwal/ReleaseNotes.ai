@@ -733,37 +733,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "getinsured"
-version = "0.1.0"
-dependencies = [
- "axum",
- "axum-extra",
- "chrono",
- "console_error_panic_hook",
- "futures",
- "git2",
- "headers",
- "http 1.1.0",
- "itertools",
- "leptos",
- "leptos_axum",
- "leptos_meta",
- "leptos_router",
- "reqwasm",
- "reqwest",
- "reqwest-eventsource",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tower",
- "tower-http",
- "tracing",
- "wasm-bindgen",
- "web-sys",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1958,6 +1927,37 @@ name = "regex-syntax"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
+
+[[package]]
+name = "releasenotes"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-extra",
+ "chrono",
+ "console_error_panic_hook",
+ "futures",
+ "git2",
+ "headers",
+ "http 1.1.0",
+ "itertools",
+ "leptos",
+ "leptos_axum",
+ "leptos_meta",
+ "leptos_router",
+ "reqwasm",
+ "reqwest",
+ "reqwest-eventsource",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tower",
+ "tower-http",
+ "tracing",
+ "wasm-bindgen",
+ "web-sys",
+]
 
 [[package]]
 name = "reqwasm"

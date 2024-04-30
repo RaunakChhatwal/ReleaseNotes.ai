@@ -4,9 +4,9 @@ async fn main() {
     use axum::{Router, routing};
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
-    use getinsured::app::*;
-    use getinsured::submit::submit;
-    use getinsured::fileserv::file_and_error_handler;
+    use releasenotes::app::*;
+    use releasenotes::submit::submit;
+    use releasenotes::fileserv::file_and_error_handler;
 
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
     // For deployment these variables are:
