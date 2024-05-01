@@ -1,11 +1,10 @@
+use anyhow::{anyhow, Result};
 use futures::{Stream, StreamExt};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use reqwest_eventsource::{Event, EventSource};
 use serde_json::{json, Value};
 
-use crate::util::DynResult;
-
-fn parse_message(message: &str) -> DynResult<String> {
+fn parse_message(message: &str) -> Result<String> {
     let token: Option<String> = serde_json::from_str::<Value>(&message)
         .ok()
         .and_then(|data| {
@@ -22,7 +21,7 @@ fn parse_message(message: &str) -> DynResult<String> {
     if let Some(token) = token {
         return Ok(token.to_string());
     } else {
-        return Err("Error parsing response.".into());
+        return Err(anyhow::anyhow!("Error parsing response."));
     }
 }
 
@@ -30,7 +29,7 @@ pub fn fetch_tokens(
     api_key: &str,
     prompt: &str,
     system_prompt:&str 
-) -> impl Stream<Item = DynResult<Option<String>>> {
+) -> impl Stream<Item = Result<Option<String>>> {
     let mut headers = HeaderMap::new();
     headers.insert("Authorization", HeaderValue::from_str(&format!("Bearer {}", api_key)).unwrap());
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -61,6 +60,6 @@ pub fn fetch_tokens(
                 Ok(Some(parse_message(&message.data)?))
             }
             Err(reqwest_eventsource::Error::StreamEnded) => Ok(None),
-            Err(error) => Err(error.to_string().into())
+            Err(error) => Err(anyhow!("{error}"))
         }});
 }

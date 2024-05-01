@@ -1932,6 +1932,7 @@ checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
 name = "releasenotes"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "axum",
  "axum-extra",
  "chrono",
@@ -1940,7 +1941,6 @@ dependencies = [
  "git2",
  "headers",
  "http 1.1.0",
- "itertools",
  "leptos",
  "leptos_axum",
  "leptos_meta",

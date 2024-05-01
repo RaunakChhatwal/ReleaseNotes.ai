@@ -1,16 +1,4 @@
-use std::error::Error;
-
 use serde::{Deserialize, Serialize};
-
-pub type DynResult<T> = Result<T, Box<dyn Error + Send + Sync>>;
-
-pub fn serialize_ok<T: Serialize>(obj: &T) -> String {
-    return serde_json::to_string(&Ok::<&T, String>(obj)).unwrap();
-}
-
-pub fn serialize_err(error: Box<dyn Error + Send + Sync>) -> String {
-    return serde_json::to_string(&Err::<(), String>(error.to_string())).unwrap();
-}
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum TargetAudience {
@@ -40,4 +28,29 @@ pub struct Arguments {
     pub release_date: chrono::NaiveDate,
     pub target_audience: TargetAudience,
     pub tickets: Vec<Ticket>
+}
+
+impl Arguments {
+    pub fn any_field_empty(&self) -> bool {
+        let Arguments { repo_link, product_name, release_tag, prev_release_tag, release_date: _, target_audience: _, tickets } = self;
+
+        if tickets.is_empty() {
+            return true;
+        }
+    
+        // iterate through all string fields
+        for field in vec![repo_link, product_name, release_tag, prev_release_tag]
+            .into_iter()
+            .chain(tickets
+                .iter()
+                .flat_map(|Ticket {summary, description}|
+                    vec![summary, description])
+        ) {
+            if field.is_empty() {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

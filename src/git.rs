@@ -1,10 +1,9 @@
+use anyhow::{anyhow, Result};
 use std::cmp::Ordering;
 use std::hash::{DefaultHasher, Hash, Hasher};
 use git2::Repository;
 
-use crate::util::DynResult;
-
-pub fn fetch_or_clone(repo_link: String) -> DynResult<Repository> {
+pub fn fetch_or_clone(repo_link: String) -> Result<Repository> {
     // the repo_link is hashed and the repo is cloned into ./repos/<hash> rather than ./repos/<repo-name>
     // this is because different repos may have the same name
     let mut hasher = DefaultHasher::new();
@@ -24,14 +23,14 @@ pub fn fetch_or_clone(repo_link: String) -> DynResult<Repository> {
     return Ok(Repository::open(repo_path)?);
 }
 
-pub fn read_commit_messages(repo: &mut Repository, release_tag: &str, prev_release_tag: &str) -> DynResult<Vec<String>> {
+pub fn read_commit_messages(repo: &mut Repository, release_tag: &str, prev_release_tag: &str) -> Result<Vec<String>> {
     let release_tag = repo.resolve_reference_from_short_name(release_tag.trim())?;
     let prev_release_tag = repo.resolve_reference_from_short_name(prev_release_tag.trim())?;
 
     let release_commit = release_tag.peel_to_commit()?;
     let prev_release_commit = prev_release_tag.peel_to_commit()?;
     if prev_release_commit.time().cmp(&release_commit.time()) != Ordering::Less {
-        return Err(format!("prev_release_tag doesn't predate release_tag.").into());
+        return Err(anyhow!("prev_release_tag doesn't predate release_tag."));
     }
 
     // a revwalk denotes an iterator over commits
@@ -51,5 +50,5 @@ pub fn read_commit_messages(repo: &mut Repository, release_tag: &str, prev_relea
         }
     }
 
-    return Err(format!("prev_release_tag doesn't precede release_tag.").into());
+    return Err(anyhow!("prev_release_tag doesn't precede release_tag."));
 }

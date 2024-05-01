@@ -1,3 +1,4 @@
+use anyhow::Result;
 use chrono::NaiveDate;
 use leptos::*;
 
@@ -5,7 +6,7 @@ use wasm_bindgen::prelude::*;
 use web_sys::{js_sys, ErrorEvent, MessageEvent, WebSocket};
 
 use crate::ticket_form::TicketForm;
-use crate::util::{Arguments, DynResult, TargetAudience, Ticket};
+use crate::util::{Arguments, TargetAudience, Ticket};
 
 #[derive(Clone, Debug)]
 enum Progress {
@@ -21,7 +22,7 @@ fn setup_callbacks(
     progress: ReadSignal<Option<Progress>>,
     set_progress: WriteSignal<Option<Progress>>,
     set_error_message: WriteSignal<String>
-) -> DynResult<()> {
+) -> Result<()> {
     web_socket.set_binary_type(web_sys::BinaryType::Arraybuffer);
 
     let ws = web_socket.clone();
@@ -42,10 +43,14 @@ fn setup_callbacks(
             let message: String = message.into();
 
             let token;
-            match serde_json::from_str::<Result<String, String>>(&message).unwrap() {
-                Ok(new_token) => token = new_token,
-                Err(error_message) => {
-                    set_error_message(error_message);
+            match serde_json::from_str::<Result<String, String>>(&message) {
+                Ok(Ok(new_token)) => token = new_token,
+                error => {
+                    if let Ok(Err(error_message)) = error {
+                        set_error_message(format!("Server error: {error_message}"));
+                    } else {
+                        set_error_message("Error parsing message.".to_string());
+                    }
                     let _ = ws.close();
                     set_progress(None);
                     return;
@@ -121,16 +126,8 @@ pub fn Form(default_arguments: Arguments, set_release_notes: WriteSignal<String>
                 .collect::<Vec<Ticket>>(),
         };
 
-        for field in vec![&arguments.repo_link, &arguments.product_name, &arguments.release_tag, &arguments.prev_release_tag]
-            .into_iter()
-            .chain(arguments.tickets
-                .iter()
-                .flat_map(|Ticket {summary, description}|
-                    vec![summary, description])
-        ) {
-            if field.is_empty() {
-                set_error_message("A field has been left empty.".to_string());
-            }
+        if arguments.any_field_empty() {
+            set_error_message("A field has been left empty.".to_string());
         }
 
         set_progress(Some(Progress::Cloning));
