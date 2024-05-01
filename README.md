@@ -44,3 +44,13 @@ Fixes:
 [Fix 2]: Description of the issue that was fixed and how it was resolved.
 
 ```
+
+## Tech Stack
+### Axum
+Axum is the Rust equivalent of Express and provides routing.
+- The frontend communicates with the backend through a single websocket exposed on `/submit`.
+- The backend communicates with the OpenAI API through HTTP server side events. This allows for streaming tokens to the client as soon as the initial tokens are ready.
+### Leptos
+Leptos is the Rust webassembly equivalent to SolidJS (like React with its reactive programming but with more granular and efficient management of the DOM). This codebase uses Leptos server components (analagous to NextJS) for quick initial loading time.
+### LibGit2
+I use the Rust bindings to libgit2. This is superior to creating git subprocesses due to type safety and performance.
