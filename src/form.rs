@@ -198,9 +198,16 @@ pub fn Form(default_arguments: Arguments, set_release_notes: WriteSignal<String>
                 <p>"Target Audience:"</p>
                 <select
                     class="w-[10em] px-[3px] text-[1rem] bg-gray-200 border-2 border-black"
-                    on:select = move |event| set_target_audience(
-                        serde_json::from_str(&event_target_value(&event)).unwrap()
-                    )
+                    on:input = move |event| {
+                        match serde_json::from_str(&format!("\"{}\"", event_target_value(&event).trim())) {
+                            Ok(new_target_audience) => {
+                                set_target_audience(
+                                    new_target_audience
+                                );
+                            },
+                            Err(error) => set_error_message(format!("{:?}", error))
+                        }
+                    }
                 >
                     <option
                         value="NonTechnical"
